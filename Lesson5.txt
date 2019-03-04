@@ -1,0 +1,96 @@
+﻿# Задача-1:
+# Напишите скрипт, создающий директории dir_1 - dir_9 в папке,
+# из которой запущен данный скрипт.
+# И второй скрипт, удаляющий эти папки.
+
+import os
+import shutil
+
+def create_dirs(name, count):
+    for i in range(1, count+1):
+        if not os.path.exists(name):
+            os.mkdir(f"{name}_{i}")
+
+def remove_empty_dirs(name, count):
+    for i in range(1, count+1):
+        if os.path.exists(name):
+            os.rmdir(f"{name}_{i}")
+
+
+def remove_dirs_recursively(name, count):
+    for i in range(1, count+1):
+        if os.path.exists(name):
+            shutil.rmtree(f"{name}_{i}")
+
+# Задача-2:
+# Напишите скрипт, отображающий папки текущей директории.
+
+def list_directory(path):
+    return os.listdir(path)
+
+# Задача-3:
+# Напишите скрипт, создающий копию файла, из которого запущен данный скрипт.
+
+def copy_current_file(postfix):
+    buf = os.path.splitext(__file__)
+    copy_name = f"{buf[0]}{postfix}{buf[1]}"
+
+    shutil.copyfile(__file__, copy_name)
+
+
+copy_current_file("_copy")
+
+
+NORMAL
+
+
+import os
+
+def print_menu(menu):
+    for i, key in enumerate(menu, start=1):
+        print(f"{i}. {key}")
+
+
+def get_command(limit):
+    command = int(input("Input command: "))
+    if 1 <= command <= limit:
+        return command
+
+
+def change_dir():
+    print("adding")
+
+
+def print_working_directory():
+    os.getcwd()
+
+
+def delete_dir():
+    print("show")
+
+
+def create_dir():
+    print("count")
+
+
+def finish():
+    exit(0)
+
+
+menu = {
+    "Change": change_dir,
+    "List": print_working_directory,
+    "Delete": delete_dir,
+    "Create": create_dir,
+    "Finish": finish,
+}
+
+
+while True:
+    print_menu(menu)
+    command = get_command(len(menu))
+    if command is not None:
+        key = list(menu.keys())[command - 1]
+        menu[key]()
+    else:
+        print("Wrong command!")
